@@ -1,12 +1,8 @@
 def day_3(filename):
     # schematic_sum = 0
-
-    text = open(filename, 'r')
-    lines = text.readlines()
-
     matrix = []
 
-    for line in lines:
+    for line in open(filename, 'r').readlines():
         line = line.strip()
         arr_line = []
         for char in line:

@@ -1,10 +1,7 @@
 def day_1(filename):
-    text = open(filename, 'r')
-    lines = text.readlines()
-
     calibration_sum = 0
 
-    for line in lines:
+    for line in open(filename, 'r').readlines():
         numbers = ''
         for element in line:
             if element.isdigit():
@@ -27,12 +24,9 @@ def day_1_part_2(filename):
         "eight": 8,
         "nine": 9
     }
-    text = open(filename, 'r')
-    lines = text.readlines()
-
     calibration_sum = 0
 
-    for line in lines:
+    for line in open(filename, 'r').readlines():
         numbers = ''
         index = 0
         max_index = len(line) - 1

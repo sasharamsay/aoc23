@@ -122,14 +122,8 @@ def get_winnings(lines, joker):
 
 
 def day_7(filename):
-    text = open(filename, 'r')
-    lines = text.readlines()
-
-    return get_winnings(lines, False)
+    return get_winnings(open(filename, 'r').readlines(), False)
 
 
 def day_7_part_2(filename):
-    text = open(filename, 'r')
-    lines = text.readlines()
-
-    return get_winnings(lines, True)
+    return get_winnings(open(filename, 'r').readlines(), True)

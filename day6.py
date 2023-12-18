@@ -48,8 +48,7 @@ def get_range(race_time, distance_to_beat):
 
 
 def day_6(filename):
-    text = open(filename, 'r')
-    lines = text.readlines()
+    lines = open(filename, 'r').readlines()
 
     times_init = lines[0].split(':')[1]
     times = re.split("\s+", times_init)
@@ -74,8 +73,7 @@ def day_6(filename):
 
 
 def day_6_part_2(filename):
-    text = open(filename, 'r')
-    lines = text.readlines()
+    lines = open(filename, 'r').readlines()
 
     times_init = lines[0].split(':')[1]
     records_init = lines[1].split(':')[1]

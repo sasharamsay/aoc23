@@ -34,12 +34,9 @@ def day_2(filename):
     num_red = 12
     num_green = 13
     num_blue = 14
-
-    text = open(filename, 'r')
-    lines = text.readlines()
     possible = []
 
-    for line in lines:
+    for line in open(filename, 'r').readlines():
         game = Game(line)
 
         if game.max_cubes['red'] <= num_red and game.max_cubes['green'] <= num_green and game.max_cubes['blue'] <= num_blue:
@@ -50,11 +47,9 @@ def day_2(filename):
 
 
 def day_2_part_2(filename):
-    text = open(filename, 'r')
-    lines = text.readlines()
     power_sum = 0
 
-    for line in lines:
+    for line in open(filename, 'r').readlines():
         game = Game(line)
         power_sum += game.power
 

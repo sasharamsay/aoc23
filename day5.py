@@ -42,8 +42,7 @@ def translate(curr_input, curr_map):
 
 
 def day_5(filename):
-    text = open(filename, 'r')
-    lines = text.readlines()
+    lines = open(filename, 'r').readlines()
 
     seeds = []
     seed_to_soil = get_map(lines, 'seed-to-soil')
@@ -72,8 +71,7 @@ def day_5(filename):
 
 
 def day_5_part_2(filename):
-    text = open(filename, 'r')
-    lines = text.readlines()
+    lines = open(filename, 'r').readlines()
 
     seeds = []
     seed_to_soil = get_map(lines, 'seed-to-soil')

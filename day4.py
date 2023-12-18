@@ -1,9 +1,7 @@
 def day_4(filename):
-    text = open(filename, 'r')
-    lines = text.readlines()
     points = 0
 
-    for line in lines:
+    for line in open(filename, 'r').readlines():
         start1 = line.index(':') + 2
         end1 = line.index('|')
 
@@ -26,8 +24,7 @@ def day_4(filename):
 
 
 def day_4_part_2(filename):
-    text = open(filename, 'r')
-    lines = text.readlines()
+    lines = open(filename, 'r').readlines()
 
     frequency = {}
 
