@@ -23,7 +23,7 @@ def run(day, part):
         case 6:
             print(day_6(filename)) if part == 1 else print(day_6_part_2(filename))
         case 7:
-            print(day_7(filename)) if part == 1 else print("day 7 part 2 not done")
+            print(day_7(filename)) if part == 1 else print(day_7_part_2(filename))
         case _:
             print("Day " + str(day) + " isn't done.")
 

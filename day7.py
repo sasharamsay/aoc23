@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class Card:
-    def __init__(self, char):
+    def __init__(self, char, joker):
         self.name = char
         if self.name.isdigit():
             self.value = int(self.name)
@@ -11,7 +11,7 @@ class Card:
                 case 'T':
                     self.value = 10
                 case 'J':
-                    self.value = 11
+                    self.value = 11 if joker is False else 1
                 case 'Q':
                     self.value = 12
                 case 'K':
@@ -44,25 +44,35 @@ class Type(Enum):
 
 
 class Hand:
-    def __init__(self, cards, bid):
+    def __init__(self, cards, bid, joker):
 
         self.cards = []
         self.frequency = {}
         self.type = ''
-
-        for card in cards:
-            self.cards.append(Card(card))
-
         self.bid = bid
 
+        for card in cards:
+            self.cards.append(Card(card, joker))
+
+        j = 0
         for card in self.cards:
-            if card.name in self.frequency:
+            if joker and card.name == 'J':
+                j += 1
+            elif card.name in self.frequency:
                 self.frequency[card.name] = self.frequency.get(card.name) + 1
             else:
                 self.frequency.update({card.name: 1})
-
-        self.most_freq_card = max(self.frequency, key=self.frequency.get)
-        self.highest_freq = self.frequency[self.most_freq_card]
+        if joker and j == 5:
+            self.frequency.update({'J': 5})
+            self.most_freq_card = 'J'
+            self.highest_freq = 5
+        elif joker and j > 0:
+            self.most_freq_card = max(self.frequency, key=self.frequency.get)
+            self.frequency[self.most_freq_card] = self.frequency.get(self.most_freq_card) + j
+            self.highest_freq = self.frequency[self.most_freq_card]
+        else:
+            self.most_freq_card = max(self.frequency, key=self.frequency.get)
+            self.highest_freq = self.frequency[self.most_freq_card]
 
         match self.highest_freq:
             case 5:
@@ -75,6 +85,8 @@ class Hand:
                 self.type = 'TWO_PAIR' if list(self.frequency.values()).count(2) == 2 else 'ONE_PAIR'
             case 1:
                 self.type = 'HIGH_CARD'
+            case _:
+                self.type = 'NO'
 
     def __lt__(self, other):
         if self.type == other.type:
@@ -93,16 +105,12 @@ class Hand:
     __repr__ = __str__
 
 
-def day_7(filename):
+def get_winnings(lines, joker):
     winnings = 0
-
-    text = open(filename, 'r')
-    lines = text.readlines()
-
     hands = []
 
     for line in lines:
-        hands.append(Hand([*line.split(' ')[0].rstrip()], int(line.split(' ')[1].rstrip())))
+        hands.append(Hand([*line.split(' ')[0].rstrip()], int(line.split(' ')[1].rstrip()), joker))
 
     hands.sort()
 
@@ -111,3 +119,17 @@ def day_7(filename):
         winnings += hand.bid * (i + 1)
 
     return winnings
+
+
+def day_7(filename):
+    text = open(filename, 'r')
+    lines = text.readlines()
+
+    return get_winnings(lines, False)
+
+
+def day_7_part_2(filename):
+    text = open(filename, 'r')
+    lines = text.readlines()
+
+    return get_winnings(lines, True)
