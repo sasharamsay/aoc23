@@ -4,10 +4,7 @@ import re
 def get_datasets(lines):
     datasets = []
     for line in lines:
-        dataset_str = re.split("\s+", line.strip())
-        dataset = []
-        for i in dataset_str:
-            dataset.append(int(i))
+        dataset = [int(i) for i in re.split("\s+", line.strip())]
         datasets.append(dataset)
     return datasets
 
