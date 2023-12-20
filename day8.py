@@ -1,45 +1,3 @@
-# --- Day 8: Haunted Wasteland ---
-# You're still riding a camel across Desert Island when you spot a sandstorm quickly approaching. When you turn to warn
-# the Elf, she disappears before your eyes! To be fair, she had just finished warning you about ghosts a few minutes
-# ago.
-#
-# One of the camel's pouches is labeled "maps" - sure enough, it's full of documents (your puzzle input) about how to
-# navigate the desert. At least, you're pretty sure that's what they are; one of the documents contains a list of
-# left/right instructions, and the rest of the documents seem to describe some kind of network of labeled nodes.
-#
-# It seems like you're meant to use the left/right instructions to navigate the network. Perhaps if you have the camel
-# follow the same instructions, you can escape the haunted wasteland!
-#
-# After examining the maps for a bit, two nodes stick out: AAA and ZZZ. You feel like AAA is where you are now, and you
-# have to follow the left/right instructions until you reach ZZZ.
-#
-# This format defines each node of the network individually. For example:
-#
-# RL
-#
-# AAA = (BBB, CCC)
-# BBB = (DDD, EEE)
-# CCC = (ZZZ, GGG)
-# DDD = (DDD, DDD)
-# EEE = (EEE, EEE)
-# GGG = (GGG, GGG)
-# ZZZ = (ZZZ, ZZZ)
-# Starting with AAA, you need to look up the next element based on the next left/right instruction in your input. In
-# this example, start with AAA and go right (R) by choosing the right element of AAA, CCC. Then, L means to choose the
-# left element of CCC, ZZZ. By following the left/right instructions, you reach ZZZ in 2 steps.
-#
-# Of course, you might not find ZZZ right away. If you run out of left/right instructions, repeat the whole sequence of
-# instructions as necessary: RL really means RLRLRLRLRLRLRLRL... and so on. For example, here is a situation that takes
-# 6 steps to reach ZZZ:
-#
-# LLR
-#
-# AAA = (BBB, BBB)
-# BBB = (AAA, ZZZ)
-# ZZZ = (ZZZ, ZZZ)
-# Starting at AAA, follow the left/right instructions. How many steps are required to reach ZZZ?
-
-
 def get_map(lines):
     desert_map = {}
 
@@ -59,28 +17,67 @@ def get_map(lines):
     return desert_map
 
 
+def a_to_z(start, instructions, full_map, part):
+    at_z = False
+    pos = start
+    steps = 0
+
+    while not at_z:
+        for char in instructions:
+            steps += 1
+            pos = full_map[pos][0] if char == 'L' else full_map[pos][1]
+            if part == 1:
+                if pos == 'ZZZ':
+                    at_z = True
+            if part == 2:
+                if pos[-1] == 'Z':
+                    at_z = True
+
+    return steps
+
+
 def day_8(filename):
     lines = open(filename, 'r').readlines()
     instructions = lines[0].rstrip()
 
     desert_map = get_map(lines)
 
-    at_z = False
-    pos = 'AAA'
-    steps = 0
+    return a_to_z('AAA', instructions, desert_map, 1)
 
-    while not at_z:
-        for char in instructions:
-            steps += 1
-            pos = desert_map[pos][0] if char == 'L' else desert_map[pos][1]
-            if pos == 'ZZZ':
-                at_z = True
 
-    return steps
+def lcm(a, b):
+    bigger = max(a, b)
+    smaller = min(a, b)
+    multiplier = bigger
+
+    while multiplier % smaller != 0:
+        multiplier += bigger
+
+    return multiplier
+
+
+def get_end(all_steps):  # get place where all paths sync up and stop at Z, basically the LCM between all path lengths
+    a = all_steps[0]
+    for i in range(1, len(all_steps)):
+        a = lcm(a, all_steps[i])
+    return a
 
 
 def day_8_part_2(filename):
-    for line in open(filename, 'r').readlines():
-        print(line)
+    lines = open(filename, 'r').readlines()
+    instructions = lines[0].rstrip()
 
-    return "not done"
+    desert_map = get_map(lines)
+    a_list = []
+
+    for k, v in desert_map.items():
+        if k[-1] == 'A':
+            a_list.append(k)
+
+    steps_list = []
+
+    for k in a_list:
+        steps = a_to_z(k, instructions, desert_map, 2)
+        steps_list.append(steps)
+
+    return get_end(steps_list)

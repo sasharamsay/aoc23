@@ -6,6 +6,7 @@ from day5 import *
 from day6 import *
 from day7 import *
 from day8 import *
+from day9 import *
 
 
 def run(day, part):
@@ -20,6 +21,7 @@ def run(day, part):
         6: (day_6, day_6_part_2),
         7: (day_7, day_7_part_2),
         8: (day_8, day_8_part_2),
+        9: (day_9, day_9_part_2)
     }
 
     print(day_map[day][part-1](filename))
@@ -29,5 +31,3 @@ if __name__ == '__main__':
     day_input = int(input("Day: "))
     part_input = int(input("Part: "))
     run(day_input, part_input)
-
-
