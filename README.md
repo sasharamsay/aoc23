@@ -26,7 +26,7 @@
   - [x] Part 2
 - Day 9
   - [x] Part 1
-  - [ ] Part 2
+  - [x] Part 2
 - Day 10
   - [ ] Part 1
   - [ ] Part 2

@@ -12,7 +12,7 @@ def get_datasets(lines):
     return datasets
 
 
-def get_next_value(dataset):
+def get_history(dataset):
     all_rows = []
 
     curr_row = dataset
@@ -31,6 +31,10 @@ def get_next_value(dataset):
             if i != 0:
                 all_zeroes = False
 
+    return all_rows
+
+
+def get_next(all_rows):
     all_rows[-1].append(0)
     prev_row = all_rows[-1]
 
@@ -41,18 +45,32 @@ def get_next_value(dataset):
     return all_rows[0][-1]
 
 
-def day_9(filename):
-    lines = open(filename, 'r').readlines()
-    datasets = get_datasets(lines)
+def get_prev(all_rows):
+    all_rows[-1].insert(0, 0)
+    prev_row = all_rows[-1]
 
+    for i in reversed(range(len(all_rows) - 1)):  # excluding row of zeroes
+        all_rows[i].insert(0, (all_rows[i][0] - prev_row[0]))
+        prev_row = all_rows[i]
+
+    return all_rows[0][0]
+
+
+def extrapolate(datasets, direction):
     sum_histories = 0
 
     for dataset in datasets:
-        sum_histories += get_next_value(dataset)
+        history = get_history(dataset)
+        sum_histories += get_next(history) if direction == 'next' else get_prev(history)
 
     return sum_histories
 
 
+def day_9(filename):
+    datasets = get_datasets(open(filename, 'r').readlines())
+    return extrapolate(datasets, 'next')
+
+
 def day_9_part_2(filename):
-    lines = open(filename, 'r').readlines()
-    print("not done")
+    datasets = get_datasets(open(filename, 'r').readlines())
+    return extrapolate(datasets, 'prev')
